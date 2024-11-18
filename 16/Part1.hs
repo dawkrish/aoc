@@ -1,22 +1,32 @@
 main = do
   file <- readFile "foo.txt"
   let sentences = lines file
-  let lights = [[(0, 0, 'R')]]
+  let lights = [[('R', (0, 0))]]
 
   let newLights = run lights sentences
-  print newLights
+  mapM_ print newLights
 
-run :: [[(Int, Int, Char)]] -> [String] -> [[(Int, Int, Char)]]
-run lights grid = run (concatMap foo lights) grid
+run :: [[(Char, (Int, Int))]] -> [String] -> [(Char, (Int, Int))]
+run lights grid = run (map foo lights) grid
   where
-    foo l = case (grid !! (t1 . head $ l)) !! (t2 . head $ l) of
-      '.' -> [(t1 . head $ l, 1 + (t2 . head $ l), t3 . head $ l) : l]
+    coord = snd . head
+    chr = fst . head
+    foo l = case chr l of
+      'R' -> case pos (coord l) grid of
+        '.' -> ('R', right (coord l)) : l
 
-t1 :: (a, b, c) -> a
-t1 (x, _, _) = x
 
-t2 :: (a, b, c) -> b
-t2 (_, y, _) = y
+pos :: (Int, Int) -> [[a]] -> a
+pos (a, b) grid = (grid !! a) !! b
 
-t3 :: (a, b, c) -> c
-t3 (_, _, z) = z
+right :: (Int, Int) -> (Int, Int)
+right (a, b) = (a, b + 1)
+
+left :: (Int, Int) -> (Int, Int)
+left (a, b) = (a, b - 1)
+
+up :: (Int, Int) -> (Int, Int)
+up (a, b) = (a - 1, b)
+
+down :: (Int, Int) -> (Int, Int)
+down (a, b) = (a + 1, b)

@@ -5,6 +5,7 @@ main = do
   file <- readFile "input.txt"
   let sentences = lines file
   let vals  = map val sentences
+  mapM_ print vals
   print  $ sum vals
 
 val :: String -> Int
