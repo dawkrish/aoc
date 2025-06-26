@@ -5,9 +5,9 @@ main = do
   file <- readFile "inputs/Day1.txt"
   print ("file length is" ++ show (length file))
   let ans1 = part1 file
-  print ("Answer of par1 is " ++ show ans1)
+  print ("Answer of part1 is " ++ show ans1)
   let ans2 = part2 file
-  print ("Answer of par2 is " ++ show ans2)
+  print ("Answer of part2 is " ++ show ans2)
 
 
 count :: Eq a => a -> [a] -> Int

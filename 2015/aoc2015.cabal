@@ -20,12 +20,15 @@ library
     import:           warnings
     exposed-modules:
                     MyLib,
-                    Day1
+                    Day1,
+                    Day2
                     
     -- other-modules:
     -- other-extensions:
-    build-depends:    base >=4.18.3.0,
-                      text
+    build-depends:    split ^>=0.2.5,
+                      base >= 4,
+                      text,
+                      
     hs-source-dirs:   src
     default-language: GHC2021
 
@@ -35,7 +38,7 @@ executable aoc2015
     -- other-modules:
     -- other-extensions:
     build-depends:
-        base >=4.18.3.0,
+        base >= 4,
         text,
         aoc2015
 
@@ -51,5 +54,5 @@ test-suite aoc2015-test
     hs-source-dirs:   test
     main-is:          Main.hs
     build-depends:
-        base >=4.18.3.0,
+        base >= 4,
         aoc2015
