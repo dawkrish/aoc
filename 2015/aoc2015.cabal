@@ -21,13 +21,15 @@ library
     exposed-modules:
                     MyLib,
                     Day1,
-                    Day2
+                    Day2,
+                    Day3
                     
     -- other-modules:
     -- other-extensions:
     build-depends:    split ^>=0.2.5,
                       base >= 4,
                       text,
+                      containers
                       
     hs-source-dirs:   src
     default-language: GHC2021
