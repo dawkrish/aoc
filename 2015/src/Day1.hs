@@ -16,7 +16,6 @@ count c = length . filter (== c)
 part1 :: String -> Int
 part1 = foldl (\x y -> if y == '(' then x + 1 else x - 1) 0 
  
-
 part2 :: String  -> Int
 part2 = length . takeWhile (>= 0) . scanl (\x y -> if y == '(' then x + 1 else x - 1) 0
 
