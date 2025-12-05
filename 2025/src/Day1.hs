@@ -10,12 +10,16 @@ run = do
   return ()
 
 part1 :: String -> Int
-part1 file = length $ filter (== 0) positions
+part1 file = sum $ map zerosEndOfRotation positions
   where
-    positions = scanl (\acc (step, dir) -> move acc step dir) 50 (map parse $ lines file)
+    positions = scanl (\acc (step, dir) -> move' (newPos acc) step dir) (Result 50 0 0) (map parse $ lines file)
 
 part2 :: String -> Int
-part2 file = 0
+part2 file = x + y
+  where
+    x = sum $ map zerosEndOfRotation positions
+    y = sum $ map zerosDuringRotation positions
+    positions = scanl (\acc (step, dir) -> move' (newPos acc) step dir) (Result 50 0 0) (map parse $ lines file)
 
 data Direction = L | R
   deriving (Eq, Show)
@@ -24,24 +28,33 @@ parse :: String -> (Int, Direction)
 parse ('L' : x) = (read x :: Int, L)
 parse ('R' : x) = (read x :: Int, R)
 
-move :: Int -> Int -> Direction -> Int
-move pos step L
-  | pos - resolvedStep >= 0 = pos - resolvedStep
-  | otherwise = pos - resolvedStep + 100
-  where
-    resolvedStep = step `mod` 100
-move pos step R
-  | pos + resolvedStep <= 99 = pos + resolvedStep
-  | otherwise = pos + resolvedStep - 100
-  where
-    resolvedStep = step `mod` 100
-
 data Result = Result {newPos :: Int, zerosEndOfRotation :: Int, zerosDuringRotation :: Int}
+  deriving (Show, Eq)
 
-move' :: Int -> Int -> Direction -> Int
-move' pos step dir = pos + (sign * netStep) + (-sign * 100 * crossZero)
+move' :: Int -> Int -> Direction -> Result
+move' pos step dir =
+  Result
+    { newPos = finalPosition,
+      zerosEndOfRotation = if finalPosition == 0 then 1 else 0,
+      zerosDuringRotation = if finalPosition == 0 then rotationsInStep else rotationsInStep + crossedZero
+    }
   where
-    netStep = step `mod` 100
     rotationsInStep = step `div` 100
-    crossZero = 0
+    finalPosition = nextPos + (-(sign * rotationRequired * 100))
+    crossedZero = if rotationRequired == 1 && pos /= 0 then 1 else 0
+    rotationRequired = if nextPos < 0 || nextPos > 99 then 1 else 0
+    nextPos = pos + (sign * netStep)
     sign = if dir == L then -1 else 1
+    netStep = step `mod` 100
+
+{-
+>>> file <- readFile "samples/01.txt"
+>>> part2' file
+[Result {newPos = 50, zerosEndOfRotation = 0, zerosDuringRotation = 0},Result {newPos = 82, zerosEndOfRotation = 0, zerosDuringRotation = 1},Result {newPos = 52, zerosEndOfRotation = 0, zerosDuringRotation = 0},Result {newPos = 0, zerosEndOfRotation = 1, zerosDuringRotation = 0},Result {newPos = 95, zerosEndOfRotation = 0, zerosDuringRotation = 0},Result {newPos = 55, zerosEndOfRotation = 0, zerosDuringRotation = 1},Result {newPos = 0, zerosEndOfRotation = 1, zerosDuringRotation = 0},Result {newPos = 99, zerosEndOfRotation = 0, zerosDuringRotation = 0},Result {newPos = 0, zerosEndOfRotation = 1, zerosDuringRotation = 0},Result {newPos = 14, zerosEndOfRotation = 0, zerosDuringRotation = 0},Result {newPos = 32, zerosEndOfRotation = 0, zerosDuringRotation = 1}]
+-}
+part2' :: String -> [Result]
+part2' file = positions
+  where
+    x = sum $ map zerosEndOfRotation positions
+    y = sum $ map zerosDuringRotation positions
+    positions = scanl (\acc (step, dir) -> move' (newPos acc) step dir) (Result 50 0 0) (map parse $ lines file)
