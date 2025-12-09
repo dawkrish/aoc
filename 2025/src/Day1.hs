@@ -50,7 +50,6 @@ move' pos step dir =
 {-
 >>> file <- readFile "samples/01.txt"
 >>> part2' file
-[Result {newPos = 50, zerosEndOfRotation = 0, zerosDuringRotation = 0},Result {newPos = 82, zerosEndOfRotation = 0, zerosDuringRotation = 1},Result {newPos = 52, zerosEndOfRotation = 0, zerosDuringRotation = 0},Result {newPos = 0, zerosEndOfRotation = 1, zerosDuringRotation = 0},Result {newPos = 95, zerosEndOfRotation = 0, zerosDuringRotation = 0},Result {newPos = 55, zerosEndOfRotation = 0, zerosDuringRotation = 1},Result {newPos = 0, zerosEndOfRotation = 1, zerosDuringRotation = 0},Result {newPos = 99, zerosEndOfRotation = 0, zerosDuringRotation = 0},Result {newPos = 0, zerosEndOfRotation = 1, zerosDuringRotation = 0},Result {newPos = 14, zerosEndOfRotation = 0, zerosDuringRotation = 0},Result {newPos = 32, zerosEndOfRotation = 0, zerosDuringRotation = 1}]
 -}
 part2' :: String -> [Result]
 part2' file = positions
