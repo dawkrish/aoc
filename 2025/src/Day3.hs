@@ -14,10 +14,3 @@ part1 file = 0
 
 part2 :: String -> Int
 part2 file = 0
-
-goFun :: String -> [String] -> [String]
-goFun [] acc = acc
-goFun (x : xs) [] = goFun xs [[x]]
-goFun (x : xs) acc
-  | x == (head . head) acc = goFun xs (map (++ [x]) acc ++ [[x]])
-  | otherwise = goFun xs (map (++ [x]) acc)
